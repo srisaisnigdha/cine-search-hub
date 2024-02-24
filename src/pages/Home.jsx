@@ -1,37 +1,32 @@
 import { useState } from "react";
 import { searchForShows, searchForPeople } from './../api/tvmaze'
+import SearchForm from "../components/SearchForm";
 
 const Home = () => {
 
-    const [SearchStr, setSearchStr] = useState(""); //passing empty string as default value
+
     const [apiData, setApiData] = useState(null)
     const [apiDataError, setApiDataError] = useState(null)
-    const [searchOption, setSearchOption] = useState("shows")
 
-    console.log(searchOption)
+    // console.log(searchOption)
 
-    const onSearchInputChange = (ev) => {
-        setSearchStr(ev.target.value);
-    }
 
-    const onRadioChange = (ev) => {
-        setSearchOption(ev.target.value);  // updating the searchOption state.
-    }
 
-    const onSearch = async (ev) => {
-        ev.preventDefault();   // we can prevent the default behaviour of this event
+    const onSearch = async ({ q, searchOption }) => {
 
         try {
             setApiDataError(null)
+
+            let result;
+
             if (searchOption === 'shows') {
-                const result = await searchForShows(SearchStr)
-                setApiData(result)  // so whatever the result array is received in console, we will place it inside our API data state
-                console.log(result)
+                result = await searchForShows(q)
             }
             else {
-                const result = await searchForPeople(SearchStr)
-                setApiData(result)
+                result = await searchForPeople(q)
             }
+
+            setApiData(result)  // so whatever the result array is received in console, we will place it inside our API data state (update)
         }
         catch (error) {
             setApiDataError(error)
@@ -65,23 +60,7 @@ const Home = () => {
 
     return (
         <div>
-            <form onSubmit={onSearch}>
-                {/* event handler for onSubmit is onSearch */}
-
-                <input type="text" value={SearchStr} onChange={onSearchInputChange} />
-
-                {/* event handler for onChange is onSearchInputChange , it is updating the searchStr state.*/}
-
-                <label>Shows
-                    <input type="radio" name="search-option" value="shows" checked={searchOption === 'shows'} onChange={onRadioChange} />
-                </label>
-
-                <label>Actors
-                    <input type="radio" name="search-option" value="actors" checked={searchOption === 'actors'} onChange={onRadioChange} />
-                </label>
-
-                <button type="submit">Search</button>
-            </form>
+            <SearchForm onSearch={onSearch} />
             <div>
                 {renderApiData()}
             </div>
