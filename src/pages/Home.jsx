@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { searchForShows, searchForPeople } from './../api/tvmaze'
 import SearchForm from "../components/SearchForm";
+import ShowGrid from "../components/shows/ShowGrid";
+import ActorsGrid from "../components/actors/ActorsGrid";
 
 const Home = () => {
 
@@ -51,9 +53,14 @@ const Home = () => {
             return <div>Error occured: {apiDataError.message}</div>
         }
 
+        if (apiData?.length === 0) // fires only when some input is given. if no input, then this condition will not execute
+        {
+            return <div>No results</div>
+        }
+
         if (apiData) {
             // here for people, we donot have .show method, instead it has .person
-            return apiData[0].show ? apiData.map((data) => <div key={data.show.id}>{data.show.name}</div>) : apiData.map((data) => <div key={data.person.id}>{data.person.name}</div>)
+            return apiData[0].show ? <ShowGrid shows={apiData} /> : <ActorsGrid actors={apiData} />
         }
         return null;  //null = nothing will be rendered inside the jsx markup
     }
