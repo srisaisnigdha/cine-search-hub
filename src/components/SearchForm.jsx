@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const SearchForm = (onSearch) => {
+const SearchForm = ({onSearch}) => {
 
     const [SearchStr, setSearchStr] = useState(""); //passing empty string as default value
     const [searchOption, setSearchOption] = useState("shows")
@@ -16,8 +16,8 @@ const SearchForm = (onSearch) => {
     const onSubmit = (ev) => {
         ev.preventDefault();   // we can prevent the default behaviour of this event
 
-        // const options={
-        //     q:SearchStr,searchOption
+        // const options = {
+        //     q: SearchStr, searchOption
         // }
         // onSearch(options);
 
