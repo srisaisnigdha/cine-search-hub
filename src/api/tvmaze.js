@@ -8,3 +8,4 @@ const apiGet = async (queryString) => {
 };
 
 export const searchForShows = (query) => apiGet(`/search/shows?q=${query}`); // it is a reusable function
+export const searchForPeople = (query) => apiGet(`/search/people?q=${query}`); // it is a reusable function
