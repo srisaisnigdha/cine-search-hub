@@ -1,36 +1,42 @@
 import { useParams } from "react-router-dom"
-import { getShowById } from '../api/tvmaze'
-import { useEffect, useState } from "react";
+import { useQuery } from '@tanstack/react-query'
+import { getShowById } from '../api/tvmaze'  // fetcher is getShowById
+// import { useEffect, useState } from "react";
+
 
 // custom react hook 
-const useShowByID = (showId) => {
-    // to put the data fetched using useEffect() inside state
-    const [showData, setShowData] = useState(null);
-    const [showError, setShowError] = useState(null);  // in case the request fails
+// const useShowByID = (showId) => {
+//     // to put the data fetched using useEffect() inside state
+//     const [showData, setShowData] = useState(null);
+//     const [showError, setShowError] = useState(null);  // in case the request fails
 
-    useEffect(() => {
+//     useEffect(() => {
 
-        async function fetchData() {
-            try {
-                const data = await (getShowById(showId))
-                setShowData(data)
-            } catch (err) {
-                setShowError(err);
-            }
-        }
-        fetchData();
+//         async function fetchData() {
+//             try {
+//                 const data = await (getShowById(showId))
+//                 setShowData(data)
+//             } catch (err) {
+//                 setShowError(err);
+//             }
+//         }
+//         fetchData();
 
-    }, [showId]); // to make it for every time every component mount (i.e, id)
-    return { showData, showError };
-}
+//     }, [showId]); // to make it for every time every component mount (i.e, id)
+//     return { showData, showError };
+// };
 
 const Show = () => {
     const { showId } = useParams();
 
-    const { showData, showError } = useShowByID(showId);
+    // const { showData, showError } = useShowByID(showId);
+    const { data: showData, error: showError } = useQuery({
+        queryKey: ['show', showId],
+        queryFn: () => getShowById(showId),
+    })
 
-    // using conditional rendering to describe the data that we grab
-    if (showError) {
+    useQuery
+    if (showError) { // using conditional rendering to describe the data that we grab
         return <div>We have an error: {showError.message} </div>
     }
     if (showData) {
