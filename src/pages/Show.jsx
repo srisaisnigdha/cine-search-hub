@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom"
 import { getShowById } from '../api/tvmaze'
 import { useEffect, useState } from "react";
 
-const Show = () => {
-    const { showId } = useParams();
+// custom react hook 
+const useShowByID = (showId) => {
     // to put the data fetched using useEffect() inside state
     const [showData, setShowData] = useState(null);
     const [showError, setShowError] = useState(null);  // in case the request fails
@@ -21,7 +21,13 @@ const Show = () => {
         fetchData();
 
     }, [showId]); // to make it for every time every component mount (i.e, id)
+    return { showData, showError };
+}
 
+const Show = () => {
+    const { showId } = useParams();
+
+    const { showData, showError } = useShowByID(showId);
 
     // using conditional rendering to describe the data that we grab
     if (showError) {
