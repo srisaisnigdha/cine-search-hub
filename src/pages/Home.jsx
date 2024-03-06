@@ -1,51 +1,48 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { searchForShows, searchForPeople } from './../api/tvmaze'
 import SearchForm from "../components/SearchForm";
 import ShowGrid from "../components/shows/ShowGrid";
 import ActorsGrid from "../components/actors/ActorsGrid";
 
 const Home = () => {
+    const [filter, setFilter] = useState('')
+
+    const { data: apiData, error: apiDataError } = useQuery({
+        queryKey: ['search', filter],
+        queryFn: () => filter.searchOption === 'shows' ? searchForShows(filter.q) : searchForPeople(filter.q),
+
+        enabled: !!filter,
+        // filters here are query string(text in the search box) and searchOption (value for radio button)
+
+        refetchOnWindowFocus: false
+    })
 
 
-    const [apiData, setApiData] = useState(null)
-    const [apiDataError, setApiDataError] = useState(null)
-
-    // console.log(searchOption)
-
-
+    // const [apiData, setApiData] = useState(null)
+    // const [apiDataError, setApiDataError] = useState(null)
 
     const onSearch = async ({ q, searchOption }) => {
 
-        try {
-            setApiDataError(null)
+        setFilter({ q, searchOption })
 
-            let result;
+        // try {
+        //     setApiDataError(null)
 
-            if (searchOption === 'shows') {
-                result = await searchForShows(q)
-            }
-            else {
-                result = await searchForPeople(q)
-            }
+        //     let result;
 
-            setApiData(result)  // so whatever the result array is received in console, we will place it inside our API data state (update)
-        }
-        catch (error) {
-            setApiDataError(error)
-        }
+        //     if (searchOption === 'shows') {
+        //         result = await searchForShows(q)
+        //     }
+        //     else {
+        //         result = await searchForPeople(q)
+        //     }
 
-        // sent all the below code to tvmaze.js file
-        // searchForShows(SearchStr)
-
-        // const body = await apiGet(`/search/shows?q=${SearchStr}`)
-
-        // fetch("https://api.tvmaze.com/search/shows?q=girls")
-        // .then(response=>response.json())
-        // .then(body=>console.log(body))     ... without using async function
-
-        // const response = await fetch(`https://api.tvmaze.com/search/shows?q=${SearchStr}`)   // made the request as dynamic using ${}
-        // const body = await response.json();
-        // console.log(body)
+        //     setApiData(result)  // so whatever the result array is received in console, we will place it inside our API data state (update)
+        // }
+        // catch (error) {
+        //     setApiDataError(error)
+        // }
     }
 
     const renderApiData = () => {
