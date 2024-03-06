@@ -9,4 +9,5 @@ const apiGet = async queryString => {
 
 export const searchForShows = query => apiGet(`/search/shows?q=${query}`); // it is a reusable function to query for shows endpoint
 export const searchForPeople = query => apiGet(`/search/people?q=${query}`); // it is a reusable function to query for actors endpoint
-export const getShowById = (showId) => apiGet(`/shows/${showId}`);
+export const getShowById = showId =>
+  apiGet(`/shows/${showId}?embed[]=seasons&embed[]=cast`);
