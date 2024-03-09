@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
+// import { Link, useParams, useNavigate } from "react-router-dom"
 import { useQuery } from '@tanstack/react-query'
 import { getShowById } from '../api/tvmaze'  // fetcher is getShowById
 import ShowMainData from "../components/shows/ShowMainData";
@@ -12,14 +13,21 @@ const Show = () => {
         queryKey: ['show', showId],
         queryFn: () => getShowById(showId),
         refetchOnWindowFocus: false
-    })
+    });
 
-    useQuery
-    if (showError) { // using conditional rendering to describe the data that we grab
+    // const navigateTo = useNavigate();
+    // const onGoBack = () => {
+    //     navigateTo('/');
+    // }
+
+    if (showError) {
         return <div>We have an error: {showError.message} </div>
     }
     if (showData) {
         return <div>
+            <Link to="/">Go back to home</Link>
+            {/* <button type="button" onClick={onGoBack}>Go back to home</button> */}
+
             <ShowMainData
                 image={showData.image}
                 name={showData.name}
