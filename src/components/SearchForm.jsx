@@ -1,44 +1,36 @@
 import { useState } from "react";
 import { useSearchStr } from "../lib/useSearchStr";
+import CustomRadio from './CustomRadio'
 
 const SearchForm = ({ onSearch }) => {
 
-    const [SearchStr, setSearchStr] = useSearchStr(); //passing empty string as default value
+    const [SearchStr, setSearchStr] = useSearchStr();
     const [searchOption, setSearchOption] = useState("shows")
 
     const onSearchInputChange = (ev) => {
-        setSearchStr(ev.target.value);  // it is input string in the text-box
+        setSearchStr(ev.target.value);
     }
 
     const onRadioChange = (ev) => {
-        setSearchOption(ev.target.value);  // it is 'shows' or 'actors' // updating the searchOption state.
+        setSearchOption(ev.target.value);
     }
 
     const onSubmit = (ev) => {
-        ev.preventDefault();   // we can prevent the default behaviour of this event
-
-        // const options = {
-        //     q: SearchStr, searchOption
-        // }
-        // onSearch(options);
-
+        ev.preventDefault();
         onSearch({ q: SearchStr, searchOption });
     }
     return (
         <form onSubmit={onSubmit}>
-            {/* event handler for onSubmit is onSearch */}
 
             <input type="text" value={SearchStr} onChange={onSearchInputChange} />
 
-            {/* event handler for onChange is onSearchInputChange , it is updating the searchStr state.*/}
+            <CustomRadio
+                label="Shows" name="search-option" value="shows" checked={searchOption === 'shows'} onChange={onRadioChange}
+            />
 
-            <label>Shows
-                <input type="radio" name="search-option" value="shows" checked={searchOption === 'shows'} onChange={onRadioChange} />
-            </label>
-
-            <label>Actors
-                <input type="radio" name="search-option" value="actors" checked={searchOption === 'actors'} onChange={onRadioChange} />
-            </label>
+            <CustomRadio
+                label="Actors" name="search-option" value="actors" checked={searchOption === 'actors'} onChange={onRadioChange}
+            />
 
             <button type="submit">Search</button>
         </form>
