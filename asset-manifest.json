@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/cine-search-hub/static/js/main.e1935f05.js",
+    "main.js": "/cine-search-hub/static/js/main.4a8960b3.js",
     "static/js/453.a8692256.chunk.js": "/cine-search-hub/static/js/453.a8692256.chunk.js",
     "service-worker.js": "/cine-search-hub/service-worker.js",
     "index.html": "/cine-search-hub/index.html",
-    "main.e1935f05.js.map": "/cine-search-hub/static/js/main.e1935f05.js.map",
+    "main.4a8960b3.js.map": "/cine-search-hub/static/js/main.4a8960b3.js.map",
     "453.a8692256.chunk.js.map": "/cine-search-hub/static/js/453.a8692256.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.e1935f05.js"
+    "static/js/main.4a8960b3.js"
   ]
 }
