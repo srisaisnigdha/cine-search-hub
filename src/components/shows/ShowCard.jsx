@@ -1,27 +1,45 @@
 // import { Link } from "react-router-dom"
 
+import { useRef } from "react";
 import styled from "styled-components";
 import { SearchCard, SearchImgWrapper } from '../common/SearchCard'
 import { StarIcon } from '../common/StarIcon'
 
 const ShowCard = ({ name, image, id, summary, onStarMeClick, isStarred }) => {
 
-    const summaryStripped = summary ? summary.split(' ').slice(0, 10).join(' ').replace(/<.+?>/g, '') + '...' : 'No description';
+  const summaryStripped = summary ? summary.split(' ').slice(0, 10).join(' ').replace(/<.+?>/g, '') + '...' : 'No description';
 
-    return <SearchCard>
-        <SearchImgWrapper>
-            <img src={image} alt={name} />
-        </SearchImgWrapper>
-        <h1>{name}</h1>
-        <p>{summaryStripped}</p>
-        <ActionSection>
-            <a href={`/show/${id}`} target="_blank" rel="noreferrer">Read more</a>
-            <StarBtn type="button" onClick={() => onStarMeClick(id)}>
-                <StarIcon active={isStarred} />   {/* when is Starred is true, then the active prop is activated, the the star will be golden color as specified in StarIcon.jsx file */}
-                {/* {isStarred ? 'Unstar me' : 'Star me'} */}
-            </StarBtn>
-        </ActionSection>
-    </SearchCard>
+  const StarBtnRef = useRef();
+
+  const handleStarClick = () => {
+    onStarMeClick(id);
+
+    const starBtnE1 = StarBtnRef.current;
+
+    if (!starBtnE1) return;
+
+    if (isStarred) {
+      starBtnE1.classList.remove('animate');
+    }
+    else {
+      starBtnE1.classList.add('animate');
+    }
+
+  }
+
+  return <SearchCard>
+    <SearchImgWrapper>
+      <img src={image} alt={name} />
+    </SearchImgWrapper>
+    <h1>{name}</h1>
+    <p>{summaryStripped}</p>
+    <ActionSection>
+      <a href={`/show/${id}`} target="_blank" rel="noreferrer">Read more</a>
+      <StarBtn ref={StarBtnRef} type="button" onClick={handleStarClick}>
+        <StarIcon $active={isStarred} />
+      </StarBtn>
+    </ActionSection>
+  </SearchCard>
 }
 
 export default ShowCard;
@@ -52,5 +70,21 @@ const StarBtn = styled.button`
   align-items: center;
   &:hover {
     cursor: pointer;
+  }
+  &.animate {
+    ${StarIcon} {
+      animation: increase 0.75s ease-in forwards;
+      @keyframes increase {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(3) rotate(45deg);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    }
   }
 `;
