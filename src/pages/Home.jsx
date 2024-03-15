@@ -4,10 +4,10 @@ import { searchForShows, searchForPeople } from './../api/tvmaze'
 import SearchForm from "../components/SearchForm";
 import ShowGrid from "../components/shows/ShowGrid";
 import ActorsGrid from "../components/actors/ActorsGrid";
+import { TextCenter } from '../components/common/TextCenter'
 
 const Home = () => {
     const [filter, setFilter] = useState('')
-
 
     const { data: apiData, error: apiDataError } = useQuery({
         queryKey: ['search', filter],
@@ -19,41 +19,18 @@ const Home = () => {
         refetchOnWindowFocus: false
     })
 
-
-    // const [apiData, setApiData] = useState(null)
-    // const [apiDataError, setApiDataError] = useState(null)
-
     const onSearch = async ({ q, searchOption }) => {
-
         setFilter({ q, searchOption })
-
-        // try {
-        //     setApiDataError(null)
-
-        //     let result;
-
-        //     if (searchOption === 'shows') {
-        //         result = await searchForShows(q)
-        //     }
-        //     else {
-        //         result = await searchForPeople(q)
-        //     }
-
-        //     setApiData(result)  // so whatever the result array is received in console, we will place it inside our API data state (update)
-        // }
-        // catch (error) {
-        //     setApiDataError(error)
-        // }
     }
 
     const renderApiData = () => {
         if (apiDataError) {
-            return <div>Error occured: {apiDataError.message}</div>
+            return <TextCenter>Error occured: {apiDataError.message}</TextCenter>
         }
 
         if (apiData?.length === 0) // fires only when some input is given. if no input, then this condition will not execute
         {
-            return <div>No results</div>
+            return <TextCenter>No results</TextCenter>
         }
 
         if (apiData) {
