@@ -1,1 +1,0 @@
-## Movies and Actors Search App
